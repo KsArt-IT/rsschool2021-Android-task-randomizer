@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import kotlin.random.Random
@@ -45,14 +46,8 @@ class SecondFragment : Fragment() {
         backButton?.setOnClickListener {
             backResult()
         }
-
-        view.isFocusableInTouchMode = true
-        view.requestFocus()
-        view.setOnKeyListener { v, keyCode, event ->
-            return@setOnKeyListener if( keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
-                backResult()
-                true
-            } else false
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            backResult()
         }
         context?.hideKeyboardFrom(view)
     }
